@@ -1,11 +1,10 @@
-# NixOS build for Orangepi 5B
+# Flake to build an Armbian Image with Nix Package Manager (Hyprland and other user stuff)
 
 ## Overview
 
-Build the installer image which is ready to flash to SDCard to boot.
-The final image contains also the `u-boot-rockchip.bin` flashed.
+(Needs Aarch64 with Nix to build, didn't test on x86_64 yet)
 
-To build the image, try `nix build`, to flash to sdcard, try `nix run . -- /dev/mmcblk1`
+To build the Image, use `nix build`. Flash the output .img.zstd file in the results folder to an SD-Card (see below). Boot the OrangePI 5x from that SD-Card. Copy the image onto SD-Card installation, and use the same process to flash it onto the eMMC drive (using LSBLK to identify).
 
 ## Spec
 
@@ -15,7 +14,7 @@ To build the image, try `nix build`, to flash to sdcard, try `nix run . -- /dev/
 
 Check `flake.nix` for more detail.
 
-## Flash the image
+## Flash the image (SD-Card or eMMC, use lsblk to identify)
 
 ```bash
 zstdcat result/sd-image/nixos-sd-image-*.img.zstd | sudo dd of=/dev/mmcblkX bs=4M status=progress
@@ -38,13 +37,16 @@ zstdcat result/sd-image/nixos-sd-image-*.img.zstd | sudo dd of=/dev/mmcblkX bs=4
 ### Not working
 
 * Wifi/BT
+* USB2.0 port not working
+* Vulkan/OpenGL doesnt seem to work? (SuperTuxKart and other games very laggy)
 * Other??
 
 ## Ref.
 
-* [Work from Ryan Yin](https://github.com/ryan4yin/nixos-rk3588)
+* [Orange PI 5x work from Si Dao](https://github.com/fb87)
+* [Initial work from Ryan Yin](https://github.com/ryan4yin/nixos-rk3588)
 
 ## Note:
 
 * Image is able to build from my OPI-5B, might work on x86_64 machine (with binfmt supported).
-
+* Needs Aarch64 with Nix to build, didn't test on x86_64 yet
